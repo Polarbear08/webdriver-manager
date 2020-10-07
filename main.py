@@ -6,8 +6,13 @@ from webdriver_manager.firefox import GeckoDriverManager
 from webdriver_manager.microsoft import EdgeChromiumDriverManager
 from webdriver_manager.microsoft import IEDriverManager
 
-custom_path = ".\\webdriver"
-driver_path = os.path.dirname(__file__) + "\\target"
+custom_path = f"{os.path.dirname(os.path.realpath(__file__))}\\webdriver"
+driver_path = f"{os.path.dirname(os.path.realpath(__file__))}\\target"
+
+if not os.path.isdir(driver_path):
+    os.mkdir(driver_path)
+if not os.path.isdir(custom_path):
+    os.mkdir(custom_path)
 
 def copyDriverToTargetDir(source: str, destination: str):
     shutil.copy(source, destination)
@@ -15,8 +20,6 @@ def copyDriverToTargetDir(source: str, destination: str):
 # chrome
 chrome_driver_path = ChromeDriverManager(path=custom_path).install()
 copyDriverToTargetDir(chrome_driver_path, driver_path)
-# chrome_options = webdriver.ChromeOptions()
-# chrome_options.add_experimental_option('excludeSwitches', ['enable-logging'])
 chrome_driver = webdriver.Chrome(executable_path=chrome_driver_path)
 chrome_driver.get('https://www.google.com')
 chrome_driver.quit()
